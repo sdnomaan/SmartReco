@@ -7,6 +7,10 @@ os.environ.setdefault("MESH_API_KEY", "")
 os.environ.setdefault("MESH_MODEL", "gpt-4o-mini")
 os.environ.setdefault("ENVIRONMENT", "testing")
 
+from app.config import get_settings
+
+get_settings.cache_clear()
+
 from fastapi.testclient import TestClient
 
 from app.main import app
