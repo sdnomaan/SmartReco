@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title or "SmartReco" }}</title>
   </head>
-  <body>
+  <body data-smartreco-page-type="{{ page_type or '' }}" data-smartreco-product-id="{{ page_product_id or '' }}" data-smartreco-category="{{ page_category or '' }}" data-smartreco-session-id="{{ page_session_id or '' }}">
     <header>
       <nav>
         <a href="/">Home</a> |
@@ -16,5 +16,6 @@
     <main>
       {% block content %}{% endblock %}
     </main>
+    <script src="/static/js/tracker.js" defer></script>
   </body>
 </html>

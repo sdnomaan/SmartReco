@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.db.models import EventType, RecommendationStatus, UserRole
 
@@ -39,6 +39,8 @@ class ProductCreate(BaseModel):
 
 
 class EventCreate(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
     session_id: str
     event_type: EventType
     product_id: int | None = None
@@ -46,6 +48,13 @@ class EventCreate(BaseModel):
     search_query: str | None = None
     metadata: dict | None = None
     duration_ms: int | None = None
+
+
+class BatchEventCreate(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    session_id: str | None = None
+    events: list[EventCreate] = Field(min_length=1, max_length=200)
 
 
 class RecommendationItemCreate(BaseModel):

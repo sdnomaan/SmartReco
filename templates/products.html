@@ -3,7 +3,7 @@
 <h1>Catalog</h1>
 <ul>
   {% for product in products %}
-    <li><a href="/products/{{ product.id }}">{{ product.title }}</a> - {{ product.category }}</li>
+    <li><a href="/products/{{ product.id }}" data-smartreco-click="product_card">{{ product.title }}</a> - {{ product.category }}</li>
   {% else %}
     <li>No active products yet.</li>
   {% endfor %}

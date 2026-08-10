@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
+from app.api.events import router as events_router
 from app.api.admin import router as admin_router
 from app.config import get_settings
 from app.api.auth import router as auth_router
@@ -24,6 +26,7 @@ def create_app() -> FastAPI:
         version="1.0.0",
         lifespan=lifespan,
     )
+    application.mount("/static", StaticFiles(directory="static"), name="static")
     application.add_middleware(
         SessionMiddleware,
         secret_key=settings.session_secret_value,
@@ -33,6 +36,7 @@ def create_app() -> FastAPI:
     application.include_router(auth_router)
     application.include_router(products_router)
     application.include_router(admin_router)
+    application.include_router(events_router)
 
     @application.get("/")
     def home() -> dict[str, str]:
