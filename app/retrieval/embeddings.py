@@ -20,5 +20,5 @@ class MeshEmbeddingClient:
 
     def embed_text(self, text: str) -> list[float]:
         settings = get_settings()
-        response = self._client().embeddings.create(model=self.model or settings.mesh_model, input=text)
+        response = self._client().embeddings.create(model=self.model or settings.mesh_embedding_model, input=text)
         return list(response.data[0].embedding)

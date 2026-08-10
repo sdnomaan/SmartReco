@@ -18,6 +18,10 @@ class Settings(BaseModel):
     environment: str = Field(default_factory=lambda: os.getenv("ENVIRONMENT", "development").strip() or "development")
     mesh_api_key: SecretStr = Field(default_factory=lambda: SecretStr(os.getenv("MESH_API_KEY", "")))
     mesh_model: str = Field(default_factory=lambda: os.getenv("MESH_MODEL", "gpt-4o-mini").strip() or "gpt-4o-mini")
+    mesh_embedding_model: str = Field(
+        default_factory=lambda: os.getenv("MESH_EMBEDDING_MODEL", "text-embedding-3-small").strip()
+        or "text-embedding-3-small"
+    )
     database_url: str = Field(
         default_factory=lambda: os.getenv("DATABASE_URL", "sqlite:///./data/smartreco.db").strip() or "sqlite:///./data/smartreco.db"
     )
