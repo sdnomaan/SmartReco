@@ -72,6 +72,9 @@ class Product(Base):
     duration: Mapped[str | None] = mapped_column(String(80), nullable=True)
     instructor: Mapped[str | None] = mapped_column(String(255), nullable=True)
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, index=True)
+    vector_sync_status: Mapped[str] = mapped_column(String(32), nullable=False, default="PENDING")
+    vector_synced_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    vector_sync_error: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()

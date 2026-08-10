@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
+import os
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from app.config import get_settings
 from app.db import database as db_module
 from app.db.database import Base
 
@@ -14,6 +16,14 @@ from app.db.database import Base
 @pytest.fixture()
 def isolated_database(tmp_path: Path):
     database_path = tmp_path / "smartreco-test.db"
+    chroma_path = tmp_path / "chroma"
+    os.environ["DATABASE_URL"] = f"sqlite:///{database_path}"
+    os.environ["CHROMA_PATH"] = str(chroma_path)
+    os.environ["SESSION_SECRET"] = "test-session-secret"
+    os.environ["ENVIRONMENT"] = "testing"
+    os.environ["MESH_API_KEY"] = ""
+    get_settings.cache_clear()
+
     engine = create_engine(f"sqlite:///{database_path}", connect_args={"check_same_thread": False})
     testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 

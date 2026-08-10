@@ -41,6 +41,18 @@ def create_product(db: Session, **product_data: object) -> Product:
     return product
 
 
+def get_product_by_id(db: Session, product_id: int) -> Product | None:
+    return db.get(Product, product_id)
+
+
+def list_products(db: Session, active_only: bool = False) -> list[Product]:
+    statement = select(Product)
+    if active_only:
+        statement = statement.where(Product.active.is_(True))
+    statement = statement.order_by(Product.id.asc())
+    return list(db.scalars(statement).all())
+
+
 def create_event(db: Session, **event_data: object) -> Event:
     event = Event(**event_data)
     db.add(event)

@@ -2,25 +2,25 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 from app.db.models import EventType, RecommendationStatus, UserRole
 
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    email: str
     password: str = Field(min_length=8)
     role: UserRole = UserRole.USER
 
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 
 class UserRead(BaseModel):
     id: int
-    email: EmailStr
+    email: str
     role: UserRole
     created_at: datetime
 

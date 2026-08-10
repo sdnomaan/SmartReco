@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Admin Products</h1>
+<p><a href="/admin/products/new">Create product</a></p>
+<ul>
+  {% for product in products %}
+    <li><a href="/admin/products/{{ product.id }}/edit">{{ product.title }}</a> - {{ "Active" if product.active else "Inactive" }}</li>
+  {% else %}
+    <li>No products yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

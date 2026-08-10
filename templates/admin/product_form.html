@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ title }}</h1>
+<form method="post" action="{{ form_action }}">
+  <label>Title <input name="title" value="{{ product.title if product else '' }}"></label><br>
+  <label>Description <textarea name="description">{{ product.description if product else '' }}</textarea></label><br>
+  <label>Category <input name="category" value="{{ product.category if product else '' }}"></label><br>
+  <label>Subcategory <input name="subcategory" value="{{ product.subcategory if product and product.subcategory else '' }}"></label><br>
+  <label>Price <input name="price" type="number" step="0.01" value="{{ product.price if product else 0 }}"></label><br>
+  <label>Difficulty <input name="difficulty" value="{{ product.difficulty if product and product.difficulty else '' }}"></label><br>
+  <label>Tags <input name="tags" value="{{ product.tags | join(', ') if product and product.tags else '' }}"></label><br>
+  <label>Duration <input name="duration" value="{{ product.duration if product and product.duration else '' }}"></label><br>
+  <label>Instructor <input name="instructor" value="{{ product.instructor if product and product.instructor else '' }}"></label><br>
+  <label>Active <input name="active" type="checkbox" {% if not product or product.active %}checked{% endif %}></label><br>
+  <button type="submit">Save</button>
+</form>
+{% if product %}
+<form method="post" action="/admin/products/{{ product.id }}/deactivate">
+  <button type="submit">Deactivate</button>
+</form>
+{% endif %}
+{% endblock %}

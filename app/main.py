@@ -3,8 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 
+from app.api.admin import router as admin_router
 from app.config import get_settings
 from app.api.auth import router as auth_router
+from app.api.products import router as products_router
 from app.db.database import initialize_database
 
 
@@ -29,6 +31,8 @@ def create_app() -> FastAPI:
         https_only=settings.environment.lower() not in {"development", "testing"},
     )
     application.include_router(auth_router)
+    application.include_router(products_router)
+    application.include_router(admin_router)
 
     @application.get("/")
     def home() -> dict[str, str]:
