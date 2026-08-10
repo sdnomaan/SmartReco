@@ -163,3 +163,28 @@ def test_events_are_queryable_afterward_with_correct_fields(client, db_session):
     assert event.user.email == "queryable@example.com"
     assert event.event_type == EventType.CATEGORY_VIEW
     assert event.timestamp is not None
+
+
+def test_product_detail_renders_tracker_context_attributes_for_authenticated_user(client, db_session):
+    _login(client, db_session, "page@example.com")
+    product = create_product(
+        db_session,
+        title="Tracker Product",
+        description="Used to verify rendered tracker attributes.",
+        category="ai",
+        subcategory="agents",
+        price=15.0,
+        difficulty="intermediate",
+        tags=["tracker"],
+        duration="2h",
+        instructor="Instructor",
+        active=True,
+        vector_sync_status="SYNCED",
+    )
+
+    response = client.get(f"/products/{product.id}")
+
+    assert response.status_code == 200
+    assert f'data-smartreco-product-id="{product.id}"' in response.text
+    assert f'data-smartreco-category="{product.category}"' in response.text
+    assert 'data-smartreco-page-type="product_detail"' in response.text

@@ -18,7 +18,15 @@ templates = Jinja2Templates(directory=str(Path(__file__).resolve().parents[2] / 
 @router.get("/products", response_class=HTMLResponse)
 def list_products(request: Request, service: ProductService = Depends(get_product_service)) -> HTMLResponse:
     products = service.list_products(active_only=True)
-    return templates.TemplateResponse(request, "products.html", {"products": products, "title": "Catalog"})
+    return templates.TemplateResponse(
+        request,
+        "products.html",
+        {
+            "products": products,
+            "title": "Catalog",
+            "page_type": "product_list",
+        },
+    )
 
 
 @router.get("/products/{product_id}", response_class=HTMLResponse)
@@ -29,5 +37,11 @@ def product_detail(request: Request, product_id: int, service: ProductService = 
     return templates.TemplateResponse(
         request,
         "product_detail.html",
-        {"product": product, "title": product.title},
+        {
+            "product": product,
+            "title": product.title,
+            "page_type": "product_detail",
+            "page_product_id": product.id,
+            "page_category": product.category,
+        },
     )
